@@ -19,6 +19,7 @@
         "markdownlint",
         "opencontainers",
         "pastebin",
+        "tflint",
         "thumbsup",
         "trimpath",
         "venv",

@@ -27,16 +27,21 @@ jobs:
           extension-matching: disable
           rename-to: talisman
           chmod: 0755
+          tag: v1.37.0
       - name: Install terraform-docs
         uses: jaxxstorm/action-install-gh-release@v1
         with:
           repo: terraform-docs/terraform-docs
+          tag: v0.21.0
       - name: Install tflint
         uses: terraform-linters/setup-tflint@v6
         with:
           cache: true
+          tflint_version: v0.61.0
       - name: Install tofu
         uses: opentofu/setup-opentofu@v1
+        with:
+          tofu_version: 1.11.4
       - uses: actions/setup-python@v6
         with:
           python-version-file: ".python-version"

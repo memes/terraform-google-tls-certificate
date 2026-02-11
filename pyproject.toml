@@ -1,12 +1,15 @@
 [project]
-# TODO(@memes) - update this placeholder
-name = "repo-template"
+name = "terraform-google-tls-certificate"
 version = "0.0.1"
 description = "Test harness for Terraform/Tofu module"
 readme = "README.md"
 requires-python = ">=3.12"
 # spell-checker: disable
-dependencies = []
+dependencies = [
+    "pytest>=9.0.2",
+    "pytest-cov>=7.0.0",
+    "pytest-xdist>=3.8.0",
+]
 
 [dependency-groups]
 dev = [
