@@ -22,3 +22,7 @@ fileignoreconfig:
   checksum: a3a57a2eb6983eec5979d1d5dc968ea9c99085dc28dbf986dcad57b2e07c5cd5
 - filename: main.tf
   checksum: 1491ed3d9180c87c89a93f398fc0393775478a3fe7e9b3e55b50e2d8e7f480cd
+- filename: modules/managed/README.md
+  checksum: 5a6de9b40a86c7a02dc686696e5664462d63586a9368c3277f8e65c12887200a
+- filename: modules/managed/variables.tf
+  checksum: 248b9c4887c3418c7e197d271f37ae419f3843c5b9d5855c401763457798d01d
