@@ -19,8 +19,11 @@ output "ssl_certificate_self_link" {
 }
 
 output "ssl_policy_self_link" {
-  value       = one([for policy in google_compute_ssl_policy.managed : policy.self_link])
+  value = one(concat(
+    [for policy in google_compute_ssl_policy.managed : policy.self_link],
+    [for policy in google_compute_region_ssl_policy.managed : policy.self_link],
+  ))
   description = <<-EOD
-  The Google SSL Policy resource, or null.
+  A self-link URL for the created global or regional Google SSL Policy resource, or null.
   EOD
 }

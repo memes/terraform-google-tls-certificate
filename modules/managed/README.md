@@ -42,6 +42,6 @@ No modules.
 | <a name="output_certificate_manager_id"></a> [certificate\_manager\_id](#output\_certificate\_manager\_id) | The Certificate Manager identifier or null. |
 | <a name="output_dns_challenges"></a> [dns\_challenges](#output\_dns\_challenges) | n/a |
 | <a name="output_ssl_certificate_self_link"></a> [ssl\_certificate\_self\_link](#output\_ssl\_certificate\_self\_link) | The Compute Engine SSL Certificate self-link or null. |
-| <a name="output_ssl_policy_self_link"></a> [ssl\_policy\_self\_link](#output\_ssl\_policy\_self\_link) | The Google SSL Policy resource, or null. |
+| <a name="output_ssl_policy_self_link"></a> [ssl\_policy\_self\_link](#output\_ssl\_policy\_self\_link) | A self-link URL for the created global or regional Google SSL Policy resource, or null. |
 <!-- END_TF_DOCS -->
 <!-- markdownlint-enable MD033 MD034 MD060 -->
