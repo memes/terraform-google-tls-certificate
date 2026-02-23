@@ -21,6 +21,7 @@ No modules.
 | [google_certificate_manager_certificate.managed](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/certificate_manager_certificate) | resource |
 | [google_certificate_manager_dns_authorization.managed](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/certificate_manager_dns_authorization) | resource |
 | [google_compute_managed_ssl_certificate.managed](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_managed_ssl_certificate) | resource |
+| [google_compute_region_ssl_policy.managed](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_region_ssl_policy) | resource |
 | [google_compute_ssl_policy.managed](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_ssl_policy) | resource |
 
 ## Inputs
@@ -32,7 +33,7 @@ No modules.
 | <a name="input_domains"></a> [domains](#input\_domains) | n/a | `list(string)` | `null` | no |
 | <a name="input_labels"></a> [labels](#input\_labels) | An optional map of label key:value pairs to assign to the Google resources. Default is an empty map. | `map(string)` | `{}` | no |
 | <a name="input_ssl_certificate"></a> [ssl\_certificate](#input\_ssl\_certificate) | If not null, a global Compute Engine SSL Certificate will be created for key name given, valid for the domains<br/>provided. | <pre>object({<br/>    name        = string<br/>    description = optional(string)<br/>  })</pre> | `null` | no |
-| <a name="input_ssl_policy"></a> [ssl\_policy](#input\_ssl\_policy) | If not null (default), a global Compute Engine SSL policy will be created with the specified options. | <pre>object({<br/>    name            = string<br/>    description     = optional(string, "TLS Policy for F5 DevCentral Demos")<br/>    profile         = optional(string, "MODERN")<br/>    min_tls_version = optional(string, "TLS_1_2")<br/>    custom_features = optional(list(string))<br/>  })</pre> | `null` | no |
+| <a name="input_ssl_policy"></a> [ssl\_policy](#input\_ssl\_policy) | If not null (default), a global Compute Engine SSL policy will be created with the specified options. The policy will be<br/>regional if the region field is not empty, global otherwise. | <pre>object({<br/>    name            = string<br/>    description     = optional(string, "TLS Policy for F5 DevCentral Demos")<br/>    region          = optional(string)<br/>    profile         = optional(string, "MODERN")<br/>    min_tls_version = optional(string, "TLS_1_2")<br/>    custom_features = optional(list(string))<br/>  })</pre> | `null` | no |
 
 ## Outputs
 

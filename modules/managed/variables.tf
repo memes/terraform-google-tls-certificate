@@ -70,6 +70,7 @@ variable "ssl_policy" {
   type = object({
     name            = string
     description     = optional(string, "TLS Policy for F5 DevCentral Demos")
+    region          = optional(string)
     profile         = optional(string, "MODERN")
     min_tls_version = optional(string, "TLS_1_2")
     custom_features = optional(list(string))
@@ -81,6 +82,7 @@ variable "ssl_policy" {
   }
   default     = null
   description = <<-EOD
-  If not null (default), a global Compute Engine SSL policy will be created with the specified options.
+  If not null (default), a global Compute Engine SSL policy will be created with the specified options. The policy will be
+  regional if the region field is not empty, global otherwise.
   EOD
 }
