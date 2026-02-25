@@ -183,6 +183,7 @@ def test_regional_ssl_certificates_count(
 
 def test_ssl_policy(
     ssl_policy_from_output: Callable[[dict[str, Any]], compute_v1.SslPolicy | None],
+    region: str,
     fixture_name: str,
     fixture_output: dict[str, Any],
 ) -> None:
@@ -191,7 +192,7 @@ def test_ssl_policy(
     assert policy is not None
     assert policy.name == fixture_name
     assert policy.description == f"Test SSL policy for {FIXTURE_NAME} scenario"
-    assert not policy.region
+    assert policy.region.split("/")[-1] == region
     assert policy.min_tls_version == "TLS_1_1"
     assert policy.profile == "CUSTOM"
     assert policy.custom_features
@@ -202,17 +203,17 @@ def test_global_ssl_policies_count(
     list_global_ssl_policies: Callable[[str], list[compute_v1.SslPolicy]],
     fixture_name: str,
 ) -> None:
-    """Verify that a global Compute Engine SSL Policy was created by querying the API directly."""
+    """Verify that no global Compute Engine SSL Policies were created by querying the API directly."""
     result = list(list_global_ssl_policies(fixture_name))
     assert result is not None
-    assert len(result) == 1
+    assert len(result) == 0
 
 
 def test_regional_ssl_policies_count(
     list_regional_ssl_policies: Callable[[str], list[compute_v1.SslPolicy]],
     fixture_name: str,
 ) -> None:
-    """Verify that no regional Compute Engine SSL Policies were created by querying the API directly."""
+    """Verify that a regional Compute Engine SSL Policies was created by querying the API directly."""
     result = list(list_regional_ssl_policies(fixture_name))
     assert result is not None
-    assert len(result) == 0
+    assert len(result) == 1
