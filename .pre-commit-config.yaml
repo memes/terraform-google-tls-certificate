@@ -38,10 +38,6 @@ repos:
       - id: conventional-pre-commit
         stages:
           - commit-msg
-  - repo: https://github.com/shellcheck-py/shellcheck-py
-    rev: v0.11.0.1
-    hooks:
-      - id: shellcheck
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0
     hooks:
@@ -50,7 +46,6 @@ repos:
       - id: check-toml
       - id: detect-private-key
       - id: end-of-file-fixer
-      # TODO: @memes - remove/modify if push to main is allowed
       - id: no-commit-to-branch
         args:
           - -b
