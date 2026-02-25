@@ -21,4 +21,5 @@ jobs:
         with:
           config-file: release-please-config.json
           manifest-file: .release-please-manifest.json
-          token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
+          # TODO(@memes): Temporarily disabled while token issue is investigated
+          # token: ${{ secrets.RELEASE_PLEASE_TOKEN }}

@@ -154,6 +154,7 @@ def assert_ca_cert(
     ca_cert: x509.Certificate | None,
 ) -> None:
     """Raise an AssertionError if the CA certificate does not meet expectations."""
+    assert ca_cert is not None
     assert ca_cert.not_valid_before_utc < datetime.now(UTC)
     assert ca_cert.not_valid_after_utc > datetime.now(UTC)
     assert isinstance(ca_cert.public_key(), rsa.RSAPublicKey)
