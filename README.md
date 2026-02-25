@@ -1,4 +1,4 @@
-# Configure TLS certificate for Google Cloud and F5 scenarios
+# Configure self-signed TLS certificate for Google Cloud
 
 ![GitHub release](https://img.shields.io/github/v/release/memes/terraform-google-tls-certificate?sort=semver)
 ![GitHub last commit](https://img.shields.io/github/last-commit/memes/terraform-google-tls-certificate)
@@ -8,7 +8,21 @@
 > Feel free to open issues and I'll do my best to respond, but for product support you should go through F5's official
 > channels.
 
-TBD
+This module will create self-signed CA and TLS certificates for demo and testing scenarios, optionally creating Secret
+Manager secrets for the certificate, key, or combination of both. F5 BIG-IP, F5 NGINX+, F5 NGINXaaS, or other solutions
+with Secret Manager integration, can retrieve these items for on-device use.
+
+The self-signed certificates can also be added as Google Cloud Certificate Manager certificates, as Compute Engine SSL
+Certificates, if required.
+
+See the examples for more details.
+
+## ACME-style certificates
+
+The [managed](modules/managed/) submodule will generate on-demand TLS certificates signed by Google's CA, pending DNS
+confirmation, for use with Google's managed load balancers.
+> NOTE: The managed module does not provide access to the TLS key and cannot be used by third-party products.
+
 <!-- markdownlint-disable MD033 MD034 MD060 -->
 <!-- BEGIN_TF_DOCS -->
 ## Requirements

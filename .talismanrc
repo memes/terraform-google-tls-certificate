@@ -38,3 +38,7 @@ fileignoreconfig:
   checksum: c8edb8197a069d91d343f9bad013b4888a6678eda695386f090f9ddead5e8b93
 - filename: tests/conftest.py
   checksum: 627f6b97775b9498b97fa461bb23d9dc6bd134b027113f18980067636efeef29
+- filename: modules/managed/README.md
+  checksum: 7bc4c5d55ae0556379918e323aff01fdc5f73285064361dd51ce5aeb649133a6
+  ignore_detectors:
+  - filecontent

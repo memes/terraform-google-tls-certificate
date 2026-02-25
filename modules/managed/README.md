@@ -1,6 +1,14 @@
-# Google Cloud managed SSL Certificates module
+# Managed TLS certificates for Google Cloud
 
-TBD
+This module will create on-demand TLS certificates for demo and testing scenarios that are signed by Google's CA,
+automatically issued as needed. These certificates can be used by Google's managed load balancers, but not by
+third-parties since access to the TLS certificate and key is abstracted away, and the private key cannot be retrieved.
+
+> NOTE: The certificates will become operational only after DNS verification; the CNAME challenges (or A record)
+> validation is required for the certificates to be issued and usable on Google's managed load balancers.
+
+See the examples for more details, or the root module for a more flexible, but self-signed only solution.
+
 <!-- markdownlint-disable MD033 MD034 MD060 -->
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
