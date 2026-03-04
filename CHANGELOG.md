@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.1](https://github.com/memes/terraform-google-tls-certificate/compare/v0.1.0...v0.1.1) (2026-03-04)
+
+
+### Bug Fixes
+
+* The DNS challenges output is not sensitive ([0f26ca5](https://github.com/memes/terraform-google-tls-certificate/commit/0f26ca5c6d25bbe3659ebe9c70f15a67e8e5a040))
+* The DNS challenges output is not sensitive ([49e2ce2](https://github.com/memes/terraform-google-tls-certificate/commit/49e2ce2318927df8b1073ffdb0e18c678a257e65))
+
 ## [0.1.0](https://github.com/memes/terraform-google-tls-certificate/compare/v0.0.1...v0.1.0) (2026-02-25)
 
 
