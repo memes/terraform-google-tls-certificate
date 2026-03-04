@@ -1,7 +1,6 @@
 
 output "dns_challenges" {
-  sensitive = true
-  value     = { for k, v in google_certificate_manager_dns_authorization.managed : k => v.dns_resource_record }
+  value = { for k, v in google_certificate_manager_dns_authorization.managed : k => v.dns_resource_record }
 }
 
 output "certificate_manager_id" {
