@@ -350,7 +350,7 @@ wheels = [
 
 [[package]]
 name = "google-cloud-certificate-manager"
-version = "1.12.0"
+version = "1.13.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "google-api-core", extra = ["grpc"] },
@@ -359,9 +359,9 @@ dependencies = [
     { name = "proto-plus" },
     { name = "protobuf" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/4c/7f/4d2071f54a3ab36e1ad3d101eb79208cc00142caaa7d128f93621d457ad0/google_cloud_certificate_manager-1.12.0.tar.gz", hash = "sha256:4b8a2fa282e92c9ba749905e1bf796c9107aed8ce138c8421f1e48dbafac9648", size = 144332, upload-time = "2026-01-15T13:15:12.07Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/1d/f4/021536ba530129febc68a8823de5967f1956f0863315e051d89470798bf9/google_cloud_certificate_manager-1.13.0.tar.gz", hash = "sha256:a853f202afa881204f25535ea694356dc88ca93a58d7b7278aabd4fa9d54ef1f", size = 145311, upload-time = "2026-03-30T22:51:07.787Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/41/d8/eeaaaf3fde5a034ea37bdd160c03b742aba26e366df619e1328eca2f982c/google_cloud_certificate_manager-1.12.0-py3-none-any.whl", hash = "sha256:42dcfb12764af4f39caf4ded6380d7f71694e13342bea9f129abeecdfb478949", size = 103340, upload-time = "2026-01-09T14:53:39.575Z" },
+    { url = "https://files.pythonhosted.org/packages/ec/70/dfe9c61f1464a4b6081b96e3312b9b136ef929208441de15f589facdba65/google_cloud_certificate_manager-1.13.0-py3-none-any.whl", hash = "sha256:d69a52dbcf6a9828143f64cc287c38c6eb2ed2e2409945559a0f6ac1b3044804", size = 104105, upload-time = "2026-03-30T20:02:30.097Z" },
 ]
 
 [[package]]
@@ -827,7 +827,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "google-cloud-certificate-manager", specifier = ">=1.12.0" },
+    { name = "google-cloud-certificate-manager", specifier = ">=1.13.0" },
     { name = "google-cloud-compute", specifier = ">=1.43.0" },
     { name = "google-cloud-iam", specifier = ">=2.21.0" },
     { name = "google-cloud-resource-manager", specifier = ">=1.16.0" },
