@@ -399,7 +399,7 @@ wheels = [
 
 [[package]]
 name = "google-cloud-resource-manager"
-version = "1.16.0"
+version = "1.17.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "google-api-core", extra = ["grpc"] },
@@ -409,9 +409,9 @@ dependencies = [
     { name = "proto-plus" },
     { name = "protobuf" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/4e/7f/db00b2820475793a52958dc55fe9ec2eb8e863546e05fcece9b921f86ebe/google_cloud_resource_manager-1.16.0.tar.gz", hash = "sha256:cc938f87cc36c2672f062b1e541650629e0d954c405a4dac35ceedee70c267c3", size = 459840, upload-time = "2026-01-15T13:04:07.726Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/b2/1a/13060cabf553d52d151d2afc26b39561e82853380d499dd525a0d422d9f0/google_cloud_resource_manager-1.17.0.tar.gz", hash = "sha256:0f486b62e2c58ff992a3a50fa0f4a96eef7750aa6c971bb373398ccb91828660", size = 464971, upload-time = "2026-03-26T22:17:29.204Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/94/ff/4b28bcc791d9d7e4ac8fea00fbd90ccb236afda56746a3b4564d2ae45df3/google_cloud_resource_manager-1.16.0-py3-none-any.whl", hash = "sha256:fb9a2ad2b5053c508e1c407ac31abfd1a22e91c32876c1892830724195819a28", size = 400218, upload-time = "2026-01-15T13:02:47.378Z" },
+    { url = "https://files.pythonhosted.org/packages/3d/f7/661d7a9023e877a226b5683429c3662f75a29ef45cb1464cf39adb689218/google_cloud_resource_manager-1.17.0-py3-none-any.whl", hash = "sha256:e479baf4b014a57f298e01b8279e3290b032e3476d69c8e5e1427af8f82739a5", size = 404403, upload-time = "2026-03-26T22:15:26.57Z" },
 ]
 
 [[package]]
@@ -830,7 +830,7 @@ requires-dist = [
     { name = "google-cloud-certificate-manager", specifier = ">=1.13.0" },
     { name = "google-cloud-compute", specifier = ">=1.43.0" },
     { name = "google-cloud-iam", specifier = ">=2.21.0" },
-    { name = "google-cloud-resource-manager", specifier = ">=1.16.0" },
+    { name = "google-cloud-resource-manager", specifier = ">=1.17.0" },
     { name = "google-cloud-secret-manager", specifier = ">=2.27.0" },
     { name = "pytest", specifier = ">=9.0.2" },
     { name = "pytest-cov", specifier = ">=7.0.0" },
