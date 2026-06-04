@@ -366,7 +366,7 @@ wheels = [
 
 [[package]]
 name = "google-cloud-compute"
-version = "1.46.0"
+version = "1.48.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "google-api-core", extra = ["grpc"] },
@@ -375,9 +375,9 @@ dependencies = [
     { name = "proto-plus" },
     { name = "protobuf" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/1b/3d/3511c167269ca7871de1b5438088749a46d5d60f65d22bef0dd4403e2301/google_cloud_compute-1.46.0.tar.gz", hash = "sha256:8b0f8d5a1115e8beae5fafdc7050f1ad15e922a5cdf6c634e5a745e47cb49281", size = 5051282, upload-time = "2026-03-12T19:31:03.81Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/85/f8/d0b8f06dd2509e4006ef27bb07f17f9fcc15aedf5093c3fe22574e45eae0/google_cloud_compute-1.48.0.tar.gz", hash = "sha256:670efbc2c5718cb86d3e8cb618afae9fb0c1ea8769c792fb960aabe075ba9e79", size = 5528763, upload-time = "2026-06-03T15:13:20.913Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/3c/36/2af8cc8bc03b3125b16fde0965d71b5724d6f6961ad5919bd98a121b6e77/google_cloud_compute-1.46.0-py3-none-any.whl", hash = "sha256:f92d9a7c32454b8a719ff937bfd46e794ee35d65e141ec5d20797aad6988dfb0", size = 3816861, upload-time = "2026-03-12T19:30:44.276Z" },
+    { url = "https://files.pythonhosted.org/packages/0d/65/ad44edfd133b7166b79f5b03dc0a47d18e6a78fcf2e5cb8baf7985d67474/google_cloud_compute-1.48.0-py3-none-any.whl", hash = "sha256:3b5b01f0b7bc1d4e830f51043545ee28b5add2888aaaddc55e272acb9b4bd657", size = 4173327, upload-time = "2026-06-03T15:12:40.01Z" },
 ]
 
 [[package]]
@@ -828,7 +828,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "google-cloud-certificate-manager", specifier = ">=1.13.0" },
-    { name = "google-cloud-compute", specifier = ">=1.43.0" },
+    { name = "google-cloud-compute", specifier = ">=1.48.0" },
     { name = "google-cloud-iam", specifier = ">=2.21.0" },
     { name = "google-cloud-resource-manager", specifier = ">=1.17.0" },
     { name = "google-cloud-secret-manager", specifier = ">=2.27.0" },
