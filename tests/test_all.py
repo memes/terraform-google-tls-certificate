@@ -1,7 +1,7 @@
 """Test fixture for TLS certificate generation with all configuration options set.
 
-Verify that an RSA-2048 TLS certificate is generated with SANs entries for RFC1918 addresses and wildcard domain, signed
-by an RSA-2048 P-256 CA certificate. These Google Cloud resources are expected:
+Verify that an RSA-2048 TLS certificate is generated with SANs entries for RFC1918 addresses and multiple domains,
+signed by an RSA-2048 P-256 CA certificate. These Google Cloud resources are expected:
 * Secret Manager secret the TLS key
 * Secret Manager secret for TLS cert
 * Secret Manager secret with JSON encoded key and cert
@@ -79,7 +79,7 @@ def fixture_output(
             "labels": fixture_labels,
             "annotations": fixture_labels,
             "requests": {
-                "wildcard": {
+                "example": {
                     "dns_names": FIXTURE_DOMAINS,
                     "ip_addresses": FIXTURE_IP_ADDRESSES,
                 },
@@ -103,8 +103,8 @@ def fixture_output(
                 ],
             },
             "secret_manager": {
-                "wildcard": {
-                    "prefix": f"{fixture_name}-wildcard",
+                "example": {
+                    "prefix": f"{fixture_name}-example",
                     "region": region,
                     "key": True,
                     "cert": True,
@@ -112,17 +112,17 @@ def fixture_output(
                 },
             },
             "certificate_manager": {
-                "wildcard": {
-                    "name": f"{fixture_name}-wildcard",
+                "example": {
+                    "name": f"{fixture_name}-example",
                     "region": region,
-                    "description": f"Test wildcard certificate for {FIXTURE_NAME} scenario",
+                    "description": f"Test example certificate for {FIXTURE_NAME} scenario",
                 },
             },
             "ssl_certificate": {
-                "wildcard": {
-                    "prefix": f"{fixture_name}-wildcard",
+                "example": {
+                    "prefix": f"{fixture_name}-example",
                     "region": region,
-                    "description": f"Test wildcard certificate for {FIXTURE_NAME} scenario",
+                    "description": f"Test example certificate for {FIXTURE_NAME} scenario",
                 },
             },
             "ssl_policy": {
@@ -244,7 +244,7 @@ def test_certificates(certificates: dict[str, x509.Certificate]) -> None:
     """Verify that the certificates from output match expectations."""
     assert certificates is not None
     assert len(certificates) == 1
-    assert "wildcard" in certificates
+    assert "example" in certificates
     for cname, cert in certificates.items():
         assert_cert(cert=cert, cname_asserter=equal_asserter_builder(cname))
 
@@ -271,7 +271,7 @@ def test_secrets(
     assert secrets is not None
     assert len(secrets) == 1
     for cname, entries in secrets.items():
-        assert cname == "wildcard"
+        assert cname == "example"
         for entry in ["key", "cert", "json"]:
             secret = entries[entry]
             assert secret
@@ -331,7 +331,7 @@ def test_certificate_manager_certificates(
     assert certificates is not None
     assert len(certificates) == 1
     for cname, certificate in certificates.items():
-        assert cname == "wildcard"
+        assert cname == "example"
         assert certificate
         assert certificate.description == f"Test {cname} certificate for {FIXTURE_NAME} scenario"
         assert all(item in certificate.labels.items() for item in fixture_labels.items())
@@ -378,7 +378,7 @@ def test_ssl_certificates(
     assert certificates is not None
     assert len(certificates) == 1
     for cname, certificate in certificates.items():
-        assert cname == "wildcard"
+        assert cname == "example"
         assert certificate
         assert certificate.description == f"Test {cname} certificate for {FIXTURE_NAME} scenario"
         assert certificate.self_managed is not None

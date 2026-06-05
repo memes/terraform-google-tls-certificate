@@ -42,3 +42,5 @@ fileignoreconfig:
   checksum: 7bc4c5d55ae0556379918e323aff01fdc5f73285064361dd51ce5aeb649133a6
   ignore_detectors:
   - filecontent
+- filename: tests/test_wildcard.py
+  checksum: bbf3617402f5c9de6ba15440e9c4b00ace0e3238982b17194516e673b28449d0

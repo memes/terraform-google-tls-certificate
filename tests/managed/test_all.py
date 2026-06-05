@@ -59,6 +59,7 @@ def fixture_output(
                 "description": f"Test managed Certificate Manager Certificate for {FIXTURE_NAME} scenario",
                 "region": region,
                 "type": "PER_PROJECT_RECORD",
+                "add_wildcard": True,
             },
             "ssl_certificate": {
                 "name": fixture_name,
@@ -92,7 +93,8 @@ def test_certificate_manager_certificate(
     assert all(item in certificate.labels.items() for item in fixture_labels.items())
     assert not certificate.self_managed
     assert certificate.managed is not None
-    assert Counter(certificate.managed.domains) == Counter(FIXTURE_DOMAINS)
+    expected_domains = [f"*.{domain}" for domain in FIXTURE_DOMAINS] + FIXTURE_DOMAINS
+    assert Counter(certificate.managed.domains) == Counter(expected_domains)
     assert certificate.managed.dns_authorizations
     assert certificate.managed.state in [
         certificate_manager_v1.Certificate.ManagedCertificate.State.PROVISIONING,

@@ -25,6 +25,7 @@
         "opencontainers",
         "pastebin",
         "resourcemanager",
+        "SECP",
         "secretmanager",
         "tflint",
         "tfvar",

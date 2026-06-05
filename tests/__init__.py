@@ -7,6 +7,7 @@ import re
 import shutil
 import subprocess
 import tempfile
+from collections import Counter
 from collections.abc import Callable, Generator
 from contextlib import contextmanager
 from datetime import UTC, datetime
@@ -14,11 +15,12 @@ from typing import Any, cast
 
 from cryptography import x509
 from cryptography.hazmat.primitives.asymmetric import ec
-from google.cloud import certificate_manager_v1
+from google.cloud import certificate_manager_v1, compute_v1
 
 type AsserterFunc = Callable[[str | bytes | None], None]
 
 DEFAULT_CA_CNAME = "Testing CA"
+DEFAULT_REGION_PATTERN = re.compile(r"/?[a-z]{2,}-[a-z]{2,}[0-9]$")
 
 
 def skip_destroy_phase() -> bool:
@@ -338,6 +340,7 @@ def assert_default_ca_cert(
 def assert_default_cert(
     cert: x509.Certificate | None,
     cname_asserter: AsserterFunc | None = None,
+    expected_sans: list[str] | None = None,
 ) -> None:
     """Raise an AssertionError if the Certificate object does not meet expectations for default TLS certificate."""
     if cname_asserter is None:
@@ -380,10 +383,14 @@ def assert_default_cert(
     )
     assert cert.extensions.get_extension_for_class(x509.ExtendedKeyUsage).value == x509.ExtendedKeyUsage(
         [
-            x509.oid.ExtendedKeyUsageOID.SERVER_AUTH,
             x509.oid.ExtendedKeyUsageOID.CLIENT_AUTH,
+            x509.oid.ExtendedKeyUsageOID.SERVER_AUTH,
         ],
     )
+    sans = cert.extensions.get_extension_for_class(x509.SubjectAlternativeName).value.get_values_for_type(x509.DNSName)
+    assert sans
+    if expected_sans:
+        assert Counter(sans) == Counter(expected_sans)
 
 
 def default_assert_key(key: Any) -> None:  # noqa: ANN401
@@ -398,20 +405,61 @@ def default_assert_certificate_manager_certificate(
     expected_labels: dict[str, str] | None = None,
     cname_asserter: AsserterFunc | None = None,
     ca_cname_asserter: AsserterFunc | None = None,
+    expected_domains: list[str] | None = None,
 ) -> None:
     """Raise an AssertionError if the Certificate Manager Certificate does not match expectations."""
     if description_asserter is None:
         description_asserter = unset_asserter
+    if expected_domains is None:
+        expected_domains = []
     assert cert
     description_asserter(cert.description)
     assert cert.labels is not None
     if expected_labels is not None:
         assert all(item in cert.labels.items() for item in expected_labels.items())
     assert cert.self_managed is not None
+    # assert cert.self_managed.pem_certificate
+    assert not cert.self_managed.pem_private_key
     assert not cert.managed
     assert cert.pem_certificate
+    assert Counter(cert.san_dnsnames) == Counter(expected_domains)
     certs_in_chain = x509.load_pem_x509_certificates(cert.pem_certificate.encode(encoding="utf-8"))
     assert len(certs_in_chain) == 2  # noqa: PLR2004
-    assert_default_cert(cert=certs_in_chain[0], cname_asserter=cname_asserter)
+    assert_default_cert(cert=certs_in_chain[0], cname_asserter=cname_asserter, expected_sans=expected_domains)
     assert_default_ca_cert(certs_in_chain[1], cname_asserter=ca_cname_asserter)
     assert cert.scope == certificate_manager_v1.Certificate.Scope.ALL_REGIONS
+
+
+def default_assert_ssl_certificate(
+    cert: compute_v1.SslCertificate,
+    description_asserter: AsserterFunc | None = None,
+    expected_labels: dict[str, str] | None = None,
+    cname_asserter: AsserterFunc | None = None,
+    ca_cname_asserter: AsserterFunc | None = None,
+    expected_domains: list[str] | None = None,
+    region_asserter: AsserterFunc | None = None,
+) -> None:
+    """Raise an AssertionError if the Compute Engine SSL Certificate does not match expectations."""
+    if description_asserter is None:
+        description_asserter = unset_asserter
+    if expected_domains is None:
+        expected_domains = []
+    if region_asserter is None:
+        region_asserter = re_asserter_builder(DEFAULT_REGION_PATTERN)
+    assert cert
+    description_asserter(cert.description)
+    if expected_labels is not None:
+        assert cert.labels is not None
+        assert all(item in cert.labels.items() for item in expected_labels.items())
+    assert cert.self_managed is not None
+    assert cert.self_managed.certificate
+    assert not cert.self_managed.private_key
+    assert not cert.managed
+    region_asserter(cert.region)
+    assert Counter(cert.subject_alternative_names) == Counter(expected_domains)
+    assert not cert.private_key
+    assert cert.certificate
+    certs_in_chain = x509.load_pem_x509_certificates(cert.certificate.encode(encoding="utf-8"))
+    assert len(certs_in_chain) == 2  # noqa: PLR2004
+    assert_default_cert(cert=certs_in_chain[0], cname_asserter=cname_asserter, expected_sans=expected_domains)
+    assert_default_ca_cert(certs_in_chain[1], cname_asserter=ca_cname_asserter)

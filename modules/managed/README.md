@@ -37,7 +37,7 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_project_id"></a> [project\_id](#input\_project\_id) | The GCP project identifier where resources will be created | `string` | n/a | yes |
-| <a name="input_certificate_manager"></a> [certificate\_manager](#input\_certificate\_manager) | n/a | <pre>object({<br/>    name        = string<br/>    region      = optional(string)<br/>    description = optional(string)<br/>    type        = optional(string)<br/>  })</pre> | `null` | no |
+| <a name="input_certificate_manager"></a> [certificate\_manager](#input\_certificate\_manager) | n/a | <pre>object({<br/>    name         = string<br/>    region       = optional(string)<br/>    description  = optional(string)<br/>    type         = optional(string)<br/>    add_wildcard = optional(bool, false)<br/>  })</pre> | `null` | no |
 | <a name="input_domains"></a> [domains](#input\_domains) | n/a | `list(string)` | `null` | no |
 | <a name="input_labels"></a> [labels](#input\_labels) | An optional map of label key:value pairs to assign to the Google resources. Default is an empty map. | `map(string)` | `{}` | no |
 | <a name="input_ssl_certificate"></a> [ssl\_certificate](#input\_ssl\_certificate) | If not null, a global Compute Engine SSL Certificate will be created for key name given, valid for the domains<br/>provided. | <pre>object({<br/>    name        = string<br/>    description = optional(string)<br/>  })</pre> | `null` | no |
