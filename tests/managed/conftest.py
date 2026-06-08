@@ -3,10 +3,12 @@
 import pathlib
 import shutil
 from collections.abc import Callable
-from typing import Any
+from typing import Any, cast
 
 import pytest
-from google.cloud import certificate_manager_v1, compute_v1
+from google.cloud import certificate_manager_v1, compute_v1, dns
+
+from tests import skip_destroy_phase
 
 
 @pytest.fixture(scope="session")
@@ -104,3 +106,40 @@ def ssl_certificate_from_output(
         return ssl_certificate_retriever(self_link)
 
     return _extractor
+
+
+@pytest.fixture(scope="session")
+def dns_client(project_id: str) -> dns.Client:
+    """Return a reusable DNS API client."""
+    return dns.Client(
+        project=project_id,
+    )
+
+
+@pytest.fixture(scope="session")
+def dns_managed_zone_builder(
+    request: pytest.FixtureRequest,
+    dns_client: dns.Client,
+) -> Callable[[str, str, str | None], dns.zone.ManagedZone]:
+    """Return a function that will create a Cloud DNS Managed Zone."""
+
+    def _builder(name: str, dns_name: str, description: str | None = None) -> dns.zone.ManagedZone:
+        assert name
+        assert dns_name
+        if not dns_name.endswith("."):
+            dns_name = f"{dns_name}."
+        if description is None:
+            description = "Test managed DNS zone for managed TLS certificates."
+        zone = next((cast("dns.zone.ManagedZone", zone) for zone in dns_client.list_zones() if zone.name == name), None)
+        if zone is None:
+            zone = dns_client.zone(name=name, dns_name=dns_name, description=description)
+            zone.create()
+
+        def _cleanup() -> None:
+            if not skip_destroy_phase():
+                zone.delete()
+
+        request.addfinalizer(_cleanup)
+        return zone
+
+    return _builder

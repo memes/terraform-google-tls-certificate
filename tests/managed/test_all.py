@@ -9,9 +9,10 @@ from collections.abc import Callable, Generator
 from typing import Any
 
 import pytest
-from google.cloud import certificate_manager_v1, compute_v1
+from google.cloud import certificate_manager_v1, compute_v1, dns
 
 from tests import run_tf_plan_apply_destroy
+from tests.managed import assert_managed_zone
 
 FIXTURE_NAME = "mgd-all"
 FIXTURE_LABELS = {
@@ -40,12 +41,25 @@ def fixture_labels(labels: dict[str, str]) -> dict[str, str]:
 
 
 @pytest.fixture(scope="module")
+def managed_zones(
+    prefix: str,
+    dns_managed_zone_builder: Callable[..., dns.zone.ManagedZone],
+) -> dict[str, dns.zone.ManagedZone]:
+    """Return a dict of DNS zone name to Cloud DNS Managed Zone."""
+    return {
+        domain: dns_managed_zone_builder(name=f"{prefix}-{domain.replace('.', '-')}", dns_name=domain)
+        for domain in FIXTURE_DOMAINS
+    }
+
+
+@pytest.fixture(scope="module")
 def fixture_output(
     fixture_dir: Callable[[str], pathlib.Path],
     project_id: str,
     region: str,
     fixture_name: str,
     fixture_labels: dict[str, str],
+    managed_zones: dict[str, dns.zone.ManagedZone],
 ) -> Generator[dict[str, Any], None, None]:
     """Create TLS resources for test case."""
     with run_tf_plan_apply_destroy(
@@ -53,7 +67,7 @@ def fixture_output(
         tfvars={
             "project_id": project_id,
             "labels": fixture_labels,
-            "domains": FIXTURE_DOMAINS,
+            "domains": {k: {"managed_zone_id": v.path.lstrip("/")} for k, v in managed_zones.items()},
             "certificate_manager": {
                 "name": fixture_name,
                 "description": f"Test managed Certificate Manager Certificate for {FIXTURE_NAME} scenario",
@@ -246,3 +260,15 @@ def test_global_certificate_maps_count(
     result = list(list_global_certificate_manager_certificate_maps(fixture_name))
     assert result is not None
     assert len(result) == 0
+
+
+def test_dns_managed_zone(
+    managed_zones: dict[str, dns.zone.ManagedZone],
+    fixture_output: dict[str, Any],  # noqa: ARG001 # Depending on fixture_output to ensure test is run after TF apply
+) -> None:
+    """Verify that the Cloud DNS Managed Zone objects have been updated as expected."""
+    assert managed_zones
+    assert len(managed_zones) == len(FIXTURE_DOMAINS)
+    for domain, managed_zone in managed_zones.items():
+        assert domain in FIXTURE_DOMAINS
+        assert_managed_zone(managed_zone=managed_zone, expected_domain=domain)

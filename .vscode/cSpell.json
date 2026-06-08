@@ -3,7 +3,9 @@
     "version": "0.2",
     "language": "en",
     "words": [
+        "addfinalizer",
         "alnum",
+        "certificatemanager",
         "cntrl",
         "direnv",
         "dnsnames",
@@ -25,6 +27,8 @@
         "opencontainers",
         "pastebin",
         "resourcemanager",
+        "rrdata",
+        "rrdatas",
         "SECP",
         "secretmanager",
         "tflint",
