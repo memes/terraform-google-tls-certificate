@@ -21,7 +21,7 @@ resource "google_certificate_manager_dns_authorization" "managed" {
 }
 
 resource "google_certificate_manager_certificate" "managed" {
-  for_each    = var.certificate_manager != null ? { enabled = true } : {}
+  for_each    = var.certificate_manager != null && try(length(var.domains), 0) > 0 ? { enabled = true } : {}
   project     = var.project_id
   name        = var.certificate_manager.name
   description = var.certificate_manager.description
@@ -29,7 +29,7 @@ resource "google_certificate_manager_certificate" "managed" {
   scope       = coalesce(try(var.certificate_manager.region, null), "global") == "global" ? "ALL_REGIONS" : "DEFAULT"
   location    = coalesce(try(var.certificate_manager.region, null), "global") != "global" ? var.certificate_manager.region : null
   managed {
-    domains            = [for k, v in google_certificate_manager_dns_authorization.managed : v.domain]
+    domains            = compact(concat(var.domains, [for domain in var.domains : try(var.certificate_manager.add_wildcard, false) ? format("*.%s", domain) : ""]))
     dns_authorizations = [for k, v in google_certificate_manager_dns_authorization.managed : v.id]
   }
 

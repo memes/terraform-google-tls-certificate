@@ -36,10 +36,11 @@ variable "domains" {
 
 variable "certificate_manager" {
   type = object({
-    name        = string
-    region      = optional(string)
-    description = optional(string)
-    type        = optional(string)
+    name         = string
+    region       = optional(string)
+    description  = optional(string)
+    type         = optional(string)
+    add_wildcard = optional(bool, false)
   })
   nullable = true
   validation {
