@@ -157,7 +157,13 @@ variable "certificate_manager" {
     condition     = var.certificate_manager == null ? true : alltrue([for k, v in var.certificate_manager : v.name == null ? true : can(regex("^[a-z][a-z0-9-]{0,62}$", v.name))])
     error_message = "The name variable must be RFC1035 compliant and between 1 and 63 characters in length."
   }
-  default = null
+  default     = null
+  description = <<-EOD
+  If not null (default), or empty, create a Certificate Manager Certificate for each self-signed certificate Common
+  Name, as defined in `requests`, provided as a key in this map. The name and description of the Certificate will be
+  taken from the mapped fields name and description, respectively, or derived from the common name. Each entry may be
+  regional if the region field is not empty, or global otherwise.
+  EOD
 }
 
 variable "ssl_certificate" {
@@ -196,5 +202,27 @@ variable "ssl_policy" {
   description = <<-EOD
   If not null (default), a Compute Engine SSL policy will be created with the specified options. The policy will be
   regional if the region field is not empty, global otherwise.
+  EOD
+}
+
+variable "certificate_map" {
+  type = object({
+    name        = string
+    description = optional(string)
+  })
+  nullable = true
+  validation {
+    condition = var.certificate_map == null ? true : (
+      var.certificate_map.name != null &&
+      can(regex("^[a-z][a-z0-9-]{0,62}$", var.certificate_map.name))
+    )
+    error_message = "The name variable must be RFC1035 compliant and between 1 and 63 characters in length, and if specified, the hostname must be a valid DNS name."
+  }
+  default     = null
+  description = <<-EOD
+  If not null (default), a Certificate Map will be created as PRIMARY matcher for the generated certificates and with
+  the specified options.
+  NOTE: Only global Certificates can be added to a Certificate Manager Certificate Map; this variable will be have no
+  effect if all Certificate Manager resources are regional.
   EOD
 }

@@ -97,3 +97,25 @@ variable "ssl_policy" {
   regional if the region field is not empty, global otherwise.
   EOD
 }
+
+variable "certificate_map" {
+  type = object({
+    name        = string
+    description = optional(string)
+  })
+  nullable = true
+  validation {
+    condition = var.certificate_map == null ? true : (
+      var.certificate_map.name != null &&
+      can(regex("^[a-z][a-z0-9-]{0,62}$", var.certificate_map.name))
+    )
+    error_message = "The name variable must be RFC1035 compliant and between 1 and 63 characters in length, and if specified, the hostname must be a valid DNS name."
+  }
+  default     = null
+  description = <<-EOD
+  If not null (default), a Certificate Map will be created as PRIMARY matcher for the generated certificates and with
+  the specified options.
+  NOTE: Only global Certificates can be added to a Certificate Manager Certificate Map; this variable will be have no
+  effect if all Certificate Manager resources are regional.
+  EOD
+}

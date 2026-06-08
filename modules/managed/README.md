@@ -27,6 +27,8 @@ No modules.
 | Name | Type |
 |------|------|
 | [google_certificate_manager_certificate.managed](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/certificate_manager_certificate) | resource |
+| [google_certificate_manager_certificate_map.managed](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/certificate_manager_certificate_map) | resource |
+| [google_certificate_manager_certificate_map_entry.managed](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/certificate_manager_certificate_map_entry) | resource |
 | [google_certificate_manager_dns_authorization.managed](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/certificate_manager_dns_authorization) | resource |
 | [google_compute_managed_ssl_certificate.managed](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_managed_ssl_certificate) | resource |
 | [google_compute_region_ssl_policy.managed](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_region_ssl_policy) | resource |
@@ -38,6 +40,7 @@ No modules.
 |------|-------------|------|---------|:--------:|
 | <a name="input_project_id"></a> [project\_id](#input\_project\_id) | The GCP project identifier where resources will be created | `string` | n/a | yes |
 | <a name="input_certificate_manager"></a> [certificate\_manager](#input\_certificate\_manager) | If not null (default), or empty, create a Certificate Manager Certificate for each domain present in `domains`. The<br/>name and description of the Certificate will be taken from the mapped fields name and description, respectively, or<br/>derived from the domain name. Each entry may be regional if the region field is not empty, or global otherwise. If the<br/>add\_wildcard field is true, the Certificate Manager Certificate will include wildcard support for each domain and<br/>force the use of DNS Challenges for domain verification regardless of the value of dns\_challenge flag. The<br/>Certificate Manager Certificate will be ready for load-balancer authorization, but the use of DNS challenge may be<br/>forced by setting dns\_challenge field to true, and optionally setting the dns\_challenge\_type field. | <pre>object({<br/>    name               = string<br/>    region             = optional(string)<br/>    description        = optional(string)<br/>    add_wildcard       = optional(bool, false)<br/>    dns_challenge      = optional(bool, false)<br/>    dns_challenge_type = optional(string)<br/>  })</pre> | `null` | no |
+| <a name="input_certificate_map"></a> [certificate\_map](#input\_certificate\_map) | If not null (default), a Certificate Map will be created as PRIMARY matcher for the generated certificates and with<br/>the specified options.<br/>NOTE: Only global Certificates can be added to a Certificate Manager Certificate Map; this variable will be have no<br/>effect if all Certificate Manager resources are regional. | <pre>object({<br/>    name        = string<br/>    description = optional(string)<br/>  })</pre> | `null` | no |
 | <a name="input_domains"></a> [domains](#input\_domains) | n/a | `list(string)` | `null` | no |
 | <a name="input_labels"></a> [labels](#input\_labels) | An optional map of label key:value pairs to assign to the Google resources. Default is an empty map. | `map(string)` | `{}` | no |
 | <a name="input_ssl_certificate"></a> [ssl\_certificate](#input\_ssl\_certificate) | If not null, a global Compute Engine SSL Certificate will be created for key name given, valid for the domains<br/>provided. | <pre>object({<br/>    name        = string<br/>    description = optional(string)<br/>  })</pre> | `null` | no |
@@ -48,6 +51,7 @@ No modules.
 | Name | Description |
 |------|-------------|
 | <a name="output_certificate_manager_id"></a> [certificate\_manager\_id](#output\_certificate\_manager\_id) | The Certificate Manager identifier or null. |
+| <a name="output_certificate_map_id"></a> [certificate\_map\_id](#output\_certificate\_map\_id) | The Certificate Manager Certificate Map identifier if created or null. |
 | <a name="output_dns_challenges"></a> [dns\_challenges](#output\_dns\_challenges) | n/a |
 | <a name="output_ssl_certificate_self_link"></a> [ssl\_certificate\_self\_link](#output\_ssl\_certificate\_self\_link) | The Compute Engine SSL Certificate self-link or null. |
 | <a name="output_ssl_policy_self_link"></a> [ssl\_policy\_self\_link](#output\_ssl\_policy\_self\_link) | A self-link URL for the created global or regional Google SSL Policy resource, or null. |

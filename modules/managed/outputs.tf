@@ -26,3 +26,10 @@ output "ssl_policy_self_link" {
   A self-link URL for the created global or regional Google SSL Policy resource, or null.
   EOD
 }
+
+output "certificate_map_id" {
+  value       = one([for k, v in google_certificate_manager_certificate_map.managed : v.id])
+  description = <<-EOD
+  The Certificate Manager Certificate Map identifier if created or null.
+  EOD
+}

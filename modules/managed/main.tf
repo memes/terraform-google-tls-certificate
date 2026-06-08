@@ -69,3 +69,20 @@ resource "google_compute_region_ssl_policy" "managed" {
   min_tls_version = try(each.value.min_tls_version, "TLS_1_2")
   custom_features = try(each.value.profile, "MODERN") == "CUSTOM" ? try(each.value.custom_features, []) : null
 }
+
+resource "google_certificate_manager_certificate_map" "managed" {
+  for_each    = length([for k, v in google_certificate_manager_certificate.managed : v.id if v.location == null]) > 0 && coalesce(try(var.certificate_map.name, null), "unspecified") != "unspecified" ? { enabled = var.certificate_map } : {}
+  project     = var.project_id
+  name        = each.value.name
+  description = try(each.value.description, null)
+}
+
+resource "google_certificate_manager_certificate_map_entry" "managed" {
+  for_each     = google_certificate_manager_certificate_map.managed
+  project      = each.value.project
+  name         = each.value.name
+  description  = each.value.description
+  map          = each.value.name
+  certificates = [for k, v in google_certificate_manager_certificate.managed : v.id if v.location == null]
+  matcher      = "PRIMARY"
+}
