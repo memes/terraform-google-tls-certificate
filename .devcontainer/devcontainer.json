@@ -19,7 +19,6 @@
     "customizations": {
         "vscode": {
             "extensions": [
-                "Gruntfuggly.todo-tree",
                 "ms-python.python",
                 "ms-python.debugpy",
                 "ms-python.vscode-python-envs",
