@@ -10,11 +10,11 @@ terraform {
 }
 
 resource "google_certificate_manager_dns_authorization" "managed" {
-  for_each    = var.certificate_manager != null && try(length(var.domains), 0) > 0 ? { for domain in var.domains : domain => substr(format("%s-%s", var.certificate_manager.name, replace(lower(domain), "/[^a-z0-9-]/", "-")), 0, 64) } : {}
+  for_each    = var.certificate_manager != null && (try(var.certificate_manager.dns_challenge, false) || try(var.certificate_manager.add_wildcard, false)) && try(length(var.domains), 0) > 0 ? { for domain in var.domains : domain => substr(format("%s-%s", var.certificate_manager.name, replace(lower(domain), "/[^a-z0-9-]/", "-")), 0, 64) } : {}
   project     = var.project_id
   name        = each.value
   description = var.certificate_manager.description
-  type        = try(var.certificate_manager.type, null)
+  type        = try(var.certificate_manager.dns_challenge_type, null)
   domain      = each.key
   location    = coalesce(try(var.certificate_manager.region, null), "global")
   labels      = var.labels
@@ -37,8 +37,6 @@ resource "google_certificate_manager_certificate" "managed" {
     google_certificate_manager_dns_authorization.managed,
   ]
 }
-
-
 
 resource "google_compute_managed_ssl_certificate" "managed" {
   for_each    = var.ssl_certificate != null && try(length(var.domains), 0) > 0 ? { enabled = true } : {}

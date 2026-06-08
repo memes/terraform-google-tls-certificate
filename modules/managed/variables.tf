@@ -36,18 +36,28 @@ variable "domains" {
 
 variable "certificate_manager" {
   type = object({
-    name         = string
-    region       = optional(string)
-    description  = optional(string)
-    type         = optional(string)
-    add_wildcard = optional(bool, false)
+    name               = string
+    region             = optional(string)
+    description        = optional(string)
+    add_wildcard       = optional(bool, false)
+    dns_challenge      = optional(bool, false)
+    dns_challenge_type = optional(string)
   })
   nullable = true
   validation {
     condition     = var.certificate_manager == null ? true : can(regex("^[a-z][a-z0-9-]{0,62}$", var.certificate_manager.name))
     error_message = "The name field must be RFC1035 compliant and between 1 and 63 characters in length."
   }
-  default = null
+  default     = null
+  description = <<-EOD
+  If not null (default), or empty, create a Certificate Manager Certificate for each domain present in `domains`. The
+  name and description of the Certificate will be taken from the mapped fields name and description, respectively, or
+  derived from the domain name. Each entry may be regional if the region field is not empty, or global otherwise. If the
+  add_wildcard field is true, the Certificate Manager Certificate will include wildcard support for each domain and
+  force the use of DNS Challenges for domain verification regardless of the value of dns_challenge flag. The
+  Certificate Manager Certificate will be ready for load-balancer authorization, but the use of DNS challenge may be
+  forced by setting dns_challenge field to true, and optionally setting the dns_challenge_type field.
+  EOD
 }
 
 variable "ssl_certificate" {
