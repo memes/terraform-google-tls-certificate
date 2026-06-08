@@ -29,7 +29,7 @@ resource "google_certificate_manager_certificate" "managed" {
   scope       = coalesce(try(var.certificate_manager.region, null), "global") == "global" ? "ALL_REGIONS" : "DEFAULT"
   location    = coalesce(try(var.certificate_manager.region, null), "global") != "global" ? var.certificate_manager.region : null
   managed {
-    domains            = compact(concat(var.domains, [for domain in var.domains : try(var.certificate_manager.add_wildcard, false) ? format("*.%s", domain) : ""]))
+    domains            = setunion(var.domains, [for domain in var.domains : try(var.certificate_manager.add_wildcard, false) ? format("*.%s", domain) : ""])
     dns_authorizations = [for k, v in google_certificate_manager_dns_authorization.managed : v.id]
   }
 

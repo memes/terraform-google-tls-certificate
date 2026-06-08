@@ -25,11 +25,11 @@ EOD
 }
 
 variable "domains" {
-  type     = list(string)
+  type     = set(string)
   nullable = true
   validation {
-    condition     = var.domains == null ? true : alltrue([for domain in var.domains : can(regex("^(?:\\*\\.)?(?:[a-z0-9][a-z0-9-]{0,61}[a-z0-9]\\.)+[a-z]{2,63}$", domain))])
-    error_message = "Each domains entry must be a valid DNS name."
+    condition     = var.domains == null ? true : alltrue([for domain in var.domains : can(regex("^(?:[a-z0-9][a-z0-9-]{0,61}[a-z0-9]\\.)+[a-z]{2,63}$", domain))])
+    error_message = "Each domains entry must be a valid, non-wildcard, DNS name."
   }
   default = null
 }

@@ -43,8 +43,8 @@ EOD
 
 variable "requests" {
   type = map(object({
-    dns_names    = optional(list(string))
-    ip_addresses = optional(list(string))
+    dns_names    = optional(set(string))
+    ip_addresses = optional(set(string))
   }))
   nullable = false
   validation {
