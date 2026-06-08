@@ -58,8 +58,9 @@ def fixture_output(
                 "name": fixture_name,
                 "description": f"Test managed Certificate Manager Certificate for {FIXTURE_NAME} scenario",
                 "region": region,
-                "type": "PER_PROJECT_RECORD",
                 "add_wildcard": True,
+                "dns_challenge": True,
+                "dns_challenge_type": "PER_PROJECT_RECORD",
             },
             "ssl_certificate": {
                 "name": fixture_name,
@@ -72,6 +73,10 @@ def fixture_output(
                 "profile": "CUSTOM",
                 "min_tls_version": "TLS_1_1",
                 "custom_features": FIXTURE_POLICY_CUSTOM_FEATURES,
+            },
+            "certificate_map": {
+                "name": fixture_name,
+                "description": f"Test Certificate Map for {FIXTURE_NAME} scenario",
             },
         },
     ) as output:
@@ -219,3 +224,25 @@ def test_regional_ssl_policies_count(
     result = list(list_regional_ssl_policies(fixture_name))
     assert result is not None
     assert len(result) == 1
+
+
+def test_certificate_manager_certificate_map(
+    certificate_manager_certificate_map_from_output: Callable[
+        [dict[str, Any]],
+        certificate_manager_v1.CertificateMap,
+    ],
+    fixture_output: dict[str, Any],
+) -> None:
+    """Verify that no Certificate Manager Certificate Maps are in the module output."""
+    certificate_map = certificate_manager_certificate_map_from_output(fixture_output)
+    assert not certificate_map
+
+
+def test_global_certificate_maps_count(
+    list_global_certificate_manager_certificate_maps: Callable[[str], list[certificate_manager_v1.CertificateMap]],
+    fixture_name: str,
+) -> None:
+    """Verify that no global Certificate Manager v1 Certificate Maps were created by querying the API directly."""
+    result = list(list_global_certificate_manager_certificate_maps(fixture_name))
+    assert result is not None
+    assert len(result) == 0
