@@ -350,7 +350,7 @@ wheels = [
 
 [[package]]
 name = "google-cloud-certificate-manager"
-version = "1.13.0"
+version = "1.14.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "google-api-core", extra = ["grpc"] },
@@ -359,9 +359,9 @@ dependencies = [
     { name = "proto-plus" },
     { name = "protobuf" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/1d/f4/021536ba530129febc68a8823de5967f1956f0863315e051d89470798bf9/google_cloud_certificate_manager-1.13.0.tar.gz", hash = "sha256:a853f202afa881204f25535ea694356dc88ca93a58d7b7278aabd4fa9d54ef1f", size = 145311, upload-time = "2026-03-30T22:51:07.787Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/53/d3/e9fffaf0da38fab19fa067cdb4d992221a0cb40670df6ce308bfeb2374e9/google_cloud_certificate_manager-1.14.0.tar.gz", hash = "sha256:67b6b004b3001d3947879d15b643b17671e4bd799386d0b761ca3e5f680ad1e1", size = 144142, upload-time = "2026-06-03T15:13:08.401Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/ec/70/dfe9c61f1464a4b6081b96e3312b9b136ef929208441de15f589facdba65/google_cloud_certificate_manager-1.13.0-py3-none-any.whl", hash = "sha256:d69a52dbcf6a9828143f64cc287c38c6eb2ed2e2409945559a0f6ac1b3044804", size = 104105, upload-time = "2026-03-30T20:02:30.097Z" },
+    { url = "https://files.pythonhosted.org/packages/24/df/c301bc8ad3706960cfd214ce9f3a820e9821d2a1e8d3d1c0133d0b974493/google_cloud_certificate_manager-1.14.0-py3-none-any.whl", hash = "sha256:64741d30be799ae559c61c3d4fdbd03d93626a947f7f14c1912ab57d96610463", size = 103928, upload-time = "2026-06-03T15:12:25.184Z" },
 ]
 
 [[package]]
@@ -853,7 +853,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "google-cloud-certificate-manager", specifier = ">=1.13.0" },
+    { name = "google-cloud-certificate-manager", specifier = ">=1.14.0" },
     { name = "google-cloud-compute", specifier = ">=1.48.0" },
     { name = "google-cloud-dns", specifier = ">=0.37.0" },
     { name = "google-cloud-iam", specifier = ">=2.23.0" },
