@@ -13,7 +13,7 @@ locals {
   # Handle nulls, etc.
   domains               = var.domains == null ? {} : var.domains
   domain_names          = keys(local.domains)
-  expanded_domain_names = setunion(local.domain_names, [for domain in local.domain_names : try(var.certificate_manager.add_wildcard, false) ? format("*.%s", domain) : ""])
+  expanded_domain_names = setunion(local.domain_names, compact([for domain in local.domain_names : try(var.certificate_manager.add_wildcard, false) ? format("*.%s", domain) : ""]))
 }
 
 resource "google_certificate_manager_dns_authorization" "managed" {
