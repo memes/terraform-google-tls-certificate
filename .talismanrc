@@ -25,7 +25,7 @@ fileignoreconfig:
 - filename: modules/managed/README.md
   checksum: 5a6de9b40a86c7a02dc686696e5664462d63586a9368c3277f8e65c12887200a
 - filename: modules/managed/variables.tf
-  checksum: 248b9c4887c3418c7e197d271f37ae419f3843c5b9d5855c401763457798d01d
+  checksum: be5374a3e21195bda283341a77c0bb8afdbf20accf5f12b5122c7b5fa4ea6242
 - filename: pyproject.toml
   checksum: 7b680d8c8a5d2d4ab3421407ae76e4658cd050c7cad593eadf48b8954c378783
 - filename: tests/test_min_rsa.py
@@ -44,3 +44,5 @@ fileignoreconfig:
   - filecontent
 - filename: tests/test_wildcard.py
   checksum: bbf3617402f5c9de6ba15440e9c4b00ace0e3238982b17194516e673b28449d0
+- filename: .devcontainer/devcontainer-lock.json
+  checksum: 44253d7500299cc1886b5341d20d696c0d0943e0696f08a20a45d6194daa4fef

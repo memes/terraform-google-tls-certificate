@@ -25,29 +25,44 @@ EOD
 }
 
 variable "domains" {
-  type     = list(string)
+  type = map(object({
+    managed_zone_id = optional(string)
+  }))
   nullable = true
   validation {
-    condition     = var.domains == null ? true : alltrue([for domain in var.domains : can(regex("^(?:\\*\\.)?(?:[a-z0-9][a-z0-9-]{0,61}[a-z0-9]\\.)+[a-z]{2,63}$", domain))])
-    error_message = "Each domains entry must be a valid DNS name."
+    condition = var.domains == null ? true : alltrue([for k, v in var.domains : (
+      can(regex("^(?:[a-z0-9][a-z0-9-]{0,61}[a-z0-9]\\.)+[a-z]{2,63}$", k)) &&
+      (v == null || coalesce(v.managed_zone_id, "unspecified") == "unspecified" ? true : can(regex("projects/[a-z][a-z0-9-]{4,28}[a-z0-9]/managedZones/[a-z][a-z0-9-]{0,61}[a-z0-9]?$", v.managed_zone_id)))
+    )])
+    error_message = "Each domains key must be a valid, non-wildcard, DNS name, and if a managed_zone_id is provided it must be valid."
   }
   default = null
 }
 
 variable "certificate_manager" {
   type = object({
-    name         = string
-    region       = optional(string)
-    description  = optional(string)
-    type         = optional(string)
-    add_wildcard = optional(bool, false)
+    name               = string
+    region             = optional(string)
+    description        = optional(string)
+    add_wildcard       = optional(bool, false)
+    dns_challenge      = optional(bool, false)
+    dns_challenge_type = optional(string)
   })
   nullable = true
   validation {
     condition     = var.certificate_manager == null ? true : can(regex("^[a-z][a-z0-9-]{0,62}$", var.certificate_manager.name))
     error_message = "The name field must be RFC1035 compliant and between 1 and 63 characters in length."
   }
-  default = null
+  default     = null
+  description = <<-EOD
+  If not null (default), or empty, create a Certificate Manager Certificate for each domain present in `domains`. The
+  name and description of the Certificate will be taken from the mapped fields name and description, respectively, or
+  derived from the domain name. Each entry may be regional if the region field is not empty, or global otherwise. If the
+  add_wildcard field is true, the Certificate Manager Certificate will include wildcard support for each domain and
+  force the use of DNS Challenges for domain verification regardless of the value of dns_challenge flag. The
+  Certificate Manager Certificate will be ready for load-balancer authorization, but the use of DNS challenge may be
+  forced by setting dns_challenge field to true, and optionally setting the dns_challenge_type field.
+  EOD
 }
 
 variable "ssl_certificate" {
@@ -85,5 +100,27 @@ variable "ssl_policy" {
   description = <<-EOD
   If not null (default), a global Compute Engine SSL policy will be created with the specified options. The policy will be
   regional if the region field is not empty, global otherwise.
+  EOD
+}
+
+variable "certificate_map" {
+  type = object({
+    name        = string
+    description = optional(string)
+  })
+  nullable = true
+  validation {
+    condition = var.certificate_map == null ? true : (
+      var.certificate_map.name != null &&
+      can(regex("^[a-z][a-z0-9-]{0,62}$", var.certificate_map.name))
+    )
+    error_message = "The name variable must be RFC1035 compliant and between 1 and 63 characters in length, and if specified, the hostname must be a valid DNS name."
+  }
+  default     = null
+  description = <<-EOD
+  If not null (default), a Certificate Map will be created as PRIMARY matcher for the generated certificates and with
+  the specified options.
+  NOTE: Only global Certificates can be added to a Certificate Manager Certificate Map; this variable will be have no
+  effect if all Certificate Manager resources are regional.
   EOD
 }

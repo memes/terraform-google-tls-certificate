@@ -730,3 +730,57 @@ def ssl_policy_from_output(
         return ssl_policy_retriever(self_link)
 
     return _extractor
+
+
+@pytest.fixture(scope="session")
+def list_global_certificate_manager_certificate_maps(
+    project_id: str,
+    certificate_manager_client: certificate_manager_v1.CertificateManagerClient,
+) -> Callable[[str], list[certificate_manager_v1.CertificateMap]]:
+    """Return a function to list global Certificate Manager Certificate Maps with names that begin with value."""
+
+    def _lister(name: str) -> list[certificate_manager_v1.CertificateMap]:  # noqa: ARG001
+        result = certificate_manager_client.list_certificate_maps(
+            request=certificate_manager_v1.ListCertificateMapsRequest(
+                parent=f"projects/{project_id}/locations/global",
+                # TODO(@memes): Filter isn't working as expected  # noqa: FIX002, TD003
+                # filter=f"name eq {name}",  # noqa: ERA001
+            ),
+        )
+        assert result is not None
+        return list(result)
+
+    return _lister
+
+
+@pytest.fixture(scope="session")
+def certificate_manager_certificate_map_retriever(
+    certificate_manager_client: certificate_manager_v1.CertificateManagerClient,
+) -> Callable[[str], certificate_manager_v1.CertificateMap]:
+    """Return a function that can retrieve a regional or global Certificate Manager Certificate Map by name."""
+
+    def _retriever(name: str) -> certificate_manager_v1.CertificateMap:
+        certificate_map = certificate_manager_client.get_certificate_map(
+            request=certificate_manager_v1.GetCertificateMapRequest(
+                name=name,
+            ),
+        )
+        assert certificate_map
+        return certificate_map
+
+    return _retriever
+
+
+@pytest.fixture(scope="session")
+def certificate_manager_certificate_map_from_output(
+    certificate_manager_certificate_map_retriever: Callable[[str], certificate_manager_v1.CertificateMap],
+) -> Callable[[dict[str, Any]], certificate_manager_v1.CertificateMap | None]:
+    """Return a Certificate Manager Certificate Map from output 'certificate_map_id', or None."""
+
+    def _extractor(fixture_output: dict[str, Any]) -> certificate_manager_v1.CertificateMap | None:
+        certificate_map_id = fixture_output.get("certificate_map_id")
+        if not certificate_map_id:
+            return None
+        return certificate_manager_certificate_map_retriever(certificate_map_id)
+
+    return _extractor

@@ -238,3 +238,25 @@ def test_regional_ssl_policies_count(
     result = list(list_regional_ssl_policies(fixture_name))
     assert result is not None
     assert len(result) == 0
+
+
+def test_certificate_manager_certificate_map(
+    certificate_manager_certificate_map_from_output: Callable[
+        [dict[str, Any]],
+        certificate_manager_v1.CertificateMap,
+    ],
+    fixture_output: dict[str, Any],
+) -> None:
+    """Verify that no Certificate Manager Certificate Maps are in the module output."""
+    certificate_map = certificate_manager_certificate_map_from_output(fixture_output)
+    assert not certificate_map
+
+
+def test_global_certificate_maps_count(
+    list_global_certificate_manager_certificate_maps: Callable[[str], list[certificate_manager_v1.CertificateMap]],
+    fixture_name: str,
+) -> None:
+    """Verify that no global Certificate Manager v1 Certificate Maps were created by querying the API directly."""
+    result = list(list_global_certificate_manager_certificate_maps(fixture_name))
+    assert result is not None
+    assert len(result) == 0
