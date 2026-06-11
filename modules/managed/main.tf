@@ -13,7 +13,7 @@ locals {
   # Handle nulls, etc.
   domains               = var.domains == null ? {} : var.domains
   domain_names          = keys(local.domains)
-  expanded_domain_names = setunion(local.domain_names, [for domain in local.domain_names : try(var.certificate_manager.add_wildcard, false) ? format("*.%s", domain) : ""])
+  expanded_domain_names = setunion(local.domain_names, compact([for domain in local.domain_names : try(var.certificate_manager.add_wildcard, false) ? format("*.%s", domain) : ""]))
 }
 
 resource "google_certificate_manager_dns_authorization" "managed" {
@@ -56,7 +56,7 @@ resource "google_certificate_manager_certificate" "managed" {
   name        = var.certificate_manager.name
   description = var.certificate_manager.description
   labels      = var.labels
-  scope       = coalesce(try(var.certificate_manager.region, null), "global") == "global" ? "ALL_REGIONS" : "DEFAULT"
+  scope       = coalesce(try(var.certificate_manager.region, null), "global") == "global" && length(google_certificate_manager_dns_authorization.managed) > 0 ? "ALL_REGIONS" : "DEFAULT"
   location    = coalesce(try(var.certificate_manager.region, null), "global") != "global" ? var.certificate_manager.region : null
   managed {
     domains            = local.expanded_domain_names
@@ -101,7 +101,7 @@ resource "google_compute_region_ssl_policy" "managed" {
 }
 
 resource "google_certificate_manager_certificate_map" "managed" {
-  for_each    = length([for k, v in google_certificate_manager_certificate.managed : v.id if v.location == null]) > 0 && coalesce(try(var.certificate_map.name, null), "unspecified") != "unspecified" ? { enabled = true } : {}
+  for_each    = length([for k, v in google_certificate_manager_certificate.managed : v.id if coalesce(v.location, "global") == "global"]) > 0 && coalesce(try(var.certificate_map.name, null), "unspecified") != "unspecified" ? { enabled = true } : {}
   project     = var.project_id
   name        = var.certificate_map.name
   description = try(var.certificate_map.description, null)
@@ -113,6 +113,6 @@ resource "google_certificate_manager_certificate_map_entry" "managed" {
   name         = each.value.name
   description  = each.value.description
   map          = each.value.name
-  certificates = [for k, v in google_certificate_manager_certificate.managed : v.id if v.location == null]
+  certificates = [for k, v in google_certificate_manager_certificate.managed : v.id if coalesce(v.location, "global") == "global"]
   matcher      = "PRIMARY"
 }
