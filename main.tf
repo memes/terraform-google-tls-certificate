@@ -260,7 +260,7 @@ resource "google_compute_region_ssl_policy" "tls" {
 }
 
 resource "google_certificate_manager_certificate_map" "tls" {
-  for_each    = length([for k, v in google_certificate_manager_certificate.tls : v.id if v.location == null]) > 0 && coalesce(try(var.certificate_map.name, null), "unspecified") != "unspecified" ? { enabled = var.certificate_map } : {}
+  for_each    = length([for k, v in google_certificate_manager_certificate.tls : v.id if coalesce(v.location, "global") == "global"]) > 0 && coalesce(try(var.certificate_map.name, null), "unspecified") != "unspecified" ? { enabled = var.certificate_map } : {}
   project     = var.project_id
   name        = each.value.name
   description = try(each.value.description, null)
@@ -272,6 +272,6 @@ resource "google_certificate_manager_certificate_map_entry" "tls" {
   name         = each.value.name
   description  = each.value.description
   map          = each.value.name
-  certificates = [for k, v in google_certificate_manager_certificate.tls : v.id if v.location == null]
+  certificates = [for k, v in google_certificate_manager_certificate.tls : v.id if coalesce(v.location, "global") == "global"]
   matcher      = "PRIMARY"
 }
