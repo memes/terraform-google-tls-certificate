@@ -32,4 +32,5 @@
         80,
         120,
     ],
+    "python.terminal.activateEnvironment": false
 }
