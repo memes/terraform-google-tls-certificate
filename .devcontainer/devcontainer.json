@@ -30,6 +30,9 @@
     },
     "containerUser": "vscode",
     "containerEnv": {
+        "CLOUDSDK_CORE_CUSTOM_CA_CERTS_FILE": "/etc/ssl/certs/ca-certificates.crt",
+        "GRPC_DEFAULT_SSL_ROOTS_FILE_PATH": "/etc/ssl/certs/ca-certificates.crt",
+        "REQUESTS_CA_BUNDLE": "/etc/ssl/certs/ca-certificates.crt",
         "UV_LINK_MODE": "copy"
     },
     "updateRemoteUserUID": true,
@@ -37,6 +40,7 @@
         "source=${localEnv:HOME}/.config/gcloud,target=/home/vscode/.config/gcloud,type=bind,consistency=cached"
     ],
     "onCreateCommand": {
+        "install-deps": "sudo sh -c 'apt update && apt install -y --no-install-recommends fzf && rm -rf /var/lib/apt/lists/*'",
         "install-uv": ["/usr/local/py-utils/bin/pipx", "install", "uv"],
         "modify-default-omz-plugins": ["/usr/bin/sed", "-i.onCreateCommand" , "-e", "/^plugins=/c\\plugins=(git dotenv)", "/home/vscode/.zshrc"]
     },
