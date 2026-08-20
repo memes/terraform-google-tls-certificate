@@ -36,7 +36,24 @@ variable "domains" {
     )])
     error_message = "Each domains key must be a valid, non-wildcard, DNS name, and if a managed_zone_id is provided it must be valid."
   }
-  default = null
+  default     = null
+  description = <<-EOD
+  If not null (default), the module will create a managed TLS certificate - optionally with wildcard support (see
+  `certificate_manager` variable) - for each key in the map. If the value of a domain contains a Cloud DNS managed zone
+  identifier the module will attempt to add DNS challenge records needed to provision a managed certificate.
+
+  E.g. to create managed TLS certiicate for `example.com` without adding CNAME challenge records, use
+  domains = {
+    "example.com" = null,
+  }
+
+  To do the same, but automatically add challenge records to Cloud DNS zone, use
+  domains = {
+    "example.com" = {
+      "managed_zone_id = "projects/DNS_PROJECT/managedZones/MANAGED_ZONE_ID"
+    },
+  }
+  EOD
 }
 
 variable "certificate_manager" {
