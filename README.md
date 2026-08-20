@@ -28,7 +28,7 @@ confirmation, for use with Google's managed load balancers.
 ## Requirements
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.5 |
 | <a name="requirement_google"></a> [google](#requirement\_google) | >= 7.1 |
 | <a name="requirement_tls"></a> [tls](#requirement\_tls) | >= 4.2 |
@@ -40,7 +40,7 @@ No modules.
 ## Resources
 
 | Name | Type |
-|------|------|
+| ---- | ---- |
 | [google_certificate_manager_certificate.tls](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/certificate_manager_certificate) | resource |
 | [google_certificate_manager_certificate_map.tls](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/certificate_manager_certificate_map) | resource |
 | [google_certificate_manager_certificate_map_entry.tls](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/certificate_manager_certificate_map_entry) | resource |
@@ -69,7 +69,7 @@ No modules.
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+| ---- | ----------- | ---- | ------- | :------: |
 | <a name="input_project_id"></a> [project\_id](#input\_project\_id) | The GCP project identifier where resources will be created | `string` | n/a | yes |
 | <a name="input_annotations"></a> [annotations](#input\_annotations) | An optional map of annotation key:value pairs to assign to the secret resources.<br/>Default is an empty map. | `map(string)` | `{}` | no |
 | <a name="input_certificate_manager"></a> [certificate\_manager](#input\_certificate\_manager) | If not null (default), or empty, create a Certificate Manager Certificate for each self-signed certificate Common<br/>Name, as defined in `requests`, provided as a key in this map. The name and description of the Certificate will be<br/>taken from the mapped fields name and description, respectively, or derived from the common name. Each entry may be<br/>regional if the region field is not empty, or global otherwise. | <pre>map(object({<br/>    name        = optional(string)<br/>    region      = optional(string)<br/>    description = optional(string)<br/>  }))</pre> | `null` | no |
@@ -85,7 +85,7 @@ No modules.
 ## Outputs
 
 | Name | Description |
-|------|-------------|
+| ---- | ----------- |
 | <a name="output_ca_cert"></a> [ca\_cert](#output\_ca\_cert) | The CA certificate in PEM format. |
 | <a name="output_certificate_manager_ids"></a> [certificate\_manager\_ids](#output\_certificate\_manager\_ids) | A map of Certificate Manager identifiers for each TLS certificate, keyed by common name. |
 | <a name="output_certificate_map_id"></a> [certificate\_map\_id](#output\_certificate\_map\_id) | The Certificate Manager Certificate Map identifier if created or null. |
