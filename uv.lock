@@ -395,14 +395,14 @@ wheels = [
 
 [[package]]
 name = "google-cloud-dns"
-version = "0.37.1"
+version = "0.37.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "google-cloud-core" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/48/bd/60329f83b220a46bd5673b1cf9334689a7a2f3897bf8505ba3ae3e74f301/google_cloud_dns-0.37.1.tar.gz", hash = "sha256:84e87e6bbe11845e3576484f55be5aa44abcbd2e677cd57d3f841e77ab927702", size = 23294, upload-time = "2026-08-25T19:18:46.597Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/1d/76/48aeb9b6c0cdbc8edbd1dea58aae87f1b5ab36a43ce3a9469e9725492bf1/google_cloud_dns-0.37.2.tar.gz", hash = "sha256:295629de0ee9f5569ea321df17a0986f44d9675f736d65493a078121cdbe321a", size = 23269, upload-time = "2026-09-29T19:26:00.464Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/6a/32/e321d28b98bcb4412a85af15c3cc3efca0f361eddfc68ee400a0de2acf30/google_cloud_dns-0.37.1-py3-none-any.whl", hash = "sha256:ac6f6f7f0f55c2aa1a45639a738d2486782267f85c6bb5a356377d84f26700e7", size = 18664, upload-time = "2026-08-24T21:55:32.854Z" },
+    { url = "https://files.pythonhosted.org/packages/37/10/4688f2433b55eeda35e2bda41aeed302e4d70994a8cf32144270c8765255/google_cloud_dns-0.37.2-py3-none-any.whl", hash = "sha256:92e898b1343c53608a696c5b164a01a2c46d19c75d485501b3af5ec693871f99", size = 18664, upload-time = "2026-09-29T19:25:36.695Z" },
 ]
 
 [[package]]
